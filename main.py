@@ -49,3 +49,41 @@ class PlayerHand(Player):
     # remove 1 card from top of his deck
     def play_card(self):
         return self.deck.pop()
+
+def main():
+
+    deck = Deck()
+    deck.shuffle()
+    deck1, deck2 = deck.split_in_two()
+
+    player1 = PlayerHand(deck1, "Tom")
+    player2 = PlayerHand(deck2, "computer")
+
+
+    # game continues till players got cards in their deck
+    while player1.has_cards() and player2.has_cards():
+        pot = []
+        while True:
+            p1_card = player1.play_card()
+            p2_card = player2.play_card()
+            pot.extend([p1_card, p2_card])
+            print(p1_card)
+            print(p2_card)
+
+            # check who won battle or declaring war
+            if RANKS.index(p1_card[2:]) > RANKS.index(p2_card[2:]):
+                player1.add_cards(pot)
+                print("{} won the battle".format(player1.name))
+                break
+            elif RANKS.index(p1_card[2:]) < RANKS.index(p2_card[2:]):
+                player2.add_cards(pot)
+                print("{} won the battle".format(player2.name))
+                break
+            else:
+                pot.extend([player1.play_card(), player2.play_card()])
+        print(player1)
+        print(player2)
+        
+
+if __name__ == "__main__":
+    main()
